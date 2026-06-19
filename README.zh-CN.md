@@ -48,7 +48,7 @@ context-compress      上下文压缩和交接
 multi-agent           通用多 Agent 备用方案
 ```
 
-完整工作流建议同时接入你已有的这些 companion skills：
+完整工作流已包含这些 companion skills：
 
 ```text
 mattpocock-skill-router   编程范式路由：选择 grill-me、to-prd、to-issues、tdd、diagnose、handoff 等流程
@@ -133,5 +133,5 @@ Use $harness-engineering and $coding-manager to deliver this PRD with subagents.
 ## 说明
 
 - 每个 skill 都刻意保持轻量。项目事实应该写在项目自身，尤其是 `AGENTS.md`、`spec/` 和 `docs/`。
-- `coding-manager` 和 `mattpocock-skill-router` 是外部 companion skills，如果本机没有，需要单独安装。
+- `coding-manager`、`mattpocock-skill-router` 以及它们路由到的 Matt 工作流 skills 已包含在本仓库中，可以随完整 harness 一起安装。
 - 本仓库内置 skills 已通过 Codex skill validator 验证。

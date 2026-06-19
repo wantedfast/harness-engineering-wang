@@ -1,0 +1,4 @@
+interface:
+  display_name: "Matt Pocock Skill Router"
+  short_description: "Routes engineering requests to Matt Pocock workflow skills."
+  default_prompt: "Use this router to choose the right Matt Pocock skill for my current engineering task."

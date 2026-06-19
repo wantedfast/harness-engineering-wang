@@ -48,7 +48,7 @@ context-compress      Handoff and context compression
 multi-agent           General multi-agent fallback
 ```
 
-The intended full workflow also integrates these existing local skills when available:
+The full workflow also includes these companion skills:
 
 ```text
 mattpocock-skill-router   Routes to grill-me, to-prd, to-issues, tdd, diagnose, handoff, etc.
@@ -135,7 +135,7 @@ Use $harness-engineering and $coding-manager to deliver this PRD with subagents.
 ## Notes
 
 - This repository intentionally keeps each skill small. Project-specific truth belongs in the project, especially `AGENTS.md`, `spec/`, and `docs/`.
-- `coding-manager` and `mattpocock-skill-router` are treated as external companion skills. Install them separately if they are not already present.
+- `coding-manager`, `mattpocock-skill-router`, and the Matt workflow skills they route to are included in this repository so the full harness can be installed together.
 - The included skills were validated with the Codex skill validator.
 
 ## Chinese README

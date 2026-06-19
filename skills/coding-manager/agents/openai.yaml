@@ -1,0 +1,4 @@
+interface:
+  display_name: "Coding Manager"
+  short_description: "Coordinate a bundled coding sub-agent team."
+  default_prompt: "Use $coding-manager. Assess the task or PRD, choose the needed bundled agents such as business-analyst, fullstack-developer, qa-expert, reviewer, debugger, or architect-reviewer, spawn them when available, then integrate, test, audit, and loop mandatory fixes until OK."
