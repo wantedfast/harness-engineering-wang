@@ -12,6 +12,7 @@ Describe what this project does, who it serves, and the main technology stack.
 - `handoff/`: context handoffs for future sessions or agents.
 - `memory/`: durable project facts and conventions.
 - `reports/`: final acceptance reports for completed work.
+- `repos/`: source repository checkouts that belong to this Codex Project workspace.
 - `review/`: review standard and independent audit reports.
 - `spec/`: requirements, acceptance criteria, and task breakdowns.
 - `test/`: test standard and verification reports.
@@ -20,7 +21,7 @@ Describe what this project does, who it serves, and the main technology stack.
 
 ## Commands
 
-Fill these in with real commands before relying on agents.
+Fill these in with real commands before relying on agents. If source code lives under `repos/<repo-name>/`, run repo-specific setup, test, lint, build, and app commands from that repo root.
 
 ```bash
 # install
@@ -36,6 +37,9 @@ Fill these in with real commands before relying on agents.
 
 ## Working Rules
 
+- Treat this directory as the workspace harness root when it is a Codex Project workspace.
+- Put downloaded or cloned implementation repositories under `repos/<repo-name>/` unless the user explicitly requests another layout.
+- Keep workspace-level specs, docs, reports, memory, and handoff files outside individual repo checkouts.
 - Inspect relevant files before editing.
 - Keep changes scoped to the requested behavior.
 - Preserve unrelated user changes.

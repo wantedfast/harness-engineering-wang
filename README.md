@@ -143,6 +143,8 @@ project/
     reports/
   reports/
     STANDARD.md
+  repos/
+    <repo-name>/
   memory/
     STANDARD.md
     project-memory.md
@@ -154,6 +156,30 @@ project/
 ```
 
 The harness is initialized automatically after the PRD or implementation brief is stable, unless doing so would overwrite existing files, conflict with existing conventions, or target an ambiguous project root.
+
+### Codex Project Workspace Layout
+
+In Codex App, the preferred harness root is the visible Project workspace, not a downloaded repository checkout. The repo should live under `repos/<repo-name>/` by default:
+
+```text
+codex-project-workspace/
+  assets/
+  docs/
+  spec/
+  tools/
+  test/
+  debug/
+  review/
+  reports/
+  memory/
+  handoff/
+  repos/
+    <repo-name>/
+  AGENTS.md
+  README.md
+```
+
+Workspace-level specs, reports, memory, and handoff files stay at the Project root. Repo-specific commands and source edits run inside the relevant `repos/<repo-name>/` checkout. See `docs/codex-project-workspace-harness-prd.md`.
 
 ## Evidence Loop
 

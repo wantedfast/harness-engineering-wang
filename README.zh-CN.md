@@ -143,6 +143,8 @@ project/
     reports/
   reports/
     STANDARD.md
+  repos/
+    <repo-name>/
   memory/
     STANDARD.md
     project-memory.md
@@ -154,6 +156,30 @@ project/
 ```
 
 PRD 或 implementation brief 稳定后，`harness-engineering` 会自动初始化或补齐这套结构。只有在会覆盖已有文件、和现有项目规范冲突、或目标项目根目录不明确时，才需要先问用户。
+
+### Codex Project 工作区结构
+
+在 Codex App 里，优先把左上角可见的 Project 工作区作为 harness 根目录，而不是把下载下来的 repo checkout 直接当成整个 harness 根目录。repo 默认放在 `repos/<repo-name>/`：
+
+```text
+codex-project-workspace/
+  assets/
+  docs/
+  spec/
+  tools/
+  test/
+  debug/
+  review/
+  reports/
+  memory/
+  handoff/
+  repos/
+    <repo-name>/
+  AGENTS.md
+  README.md
+```
+
+workspace 级别的 specs、reports、memory、handoff 留在 Project 根目录；repo 相关命令和源码修改在对应的 `repos/<repo-name>/` checkout 里执行。详见 `docs/codex-project-workspace-harness-prd.md`。
 
 ## 证据闭环
 

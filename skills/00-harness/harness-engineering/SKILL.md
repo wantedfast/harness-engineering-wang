@@ -5,11 +5,11 @@ description: Orchestrate AI-assisted software projects using a standard project 
 
 # Harness Engineering
 
-Use this skill as the project-level coordinator. It turns a software repo into an AI-operable workspace with clear specs, instructions, tools, validation, and memory.
+Use this skill as the project-level coordinator. It turns a Codex Project workspace or software repo into an AI-operable workspace with clear specs, instructions, tools, validation, and memory.
 
 ## Core Standard
 
-Apply this structure when initializing or normalizing a project:
+Apply this structure when initializing or normalizing a project workspace:
 
 ```txt
 project/
@@ -20,6 +20,8 @@ project/
   memory/
   reports/
   review/
+  repos/
+    <repo-name>/
   spec/
   test/
   tools/
@@ -39,11 +41,45 @@ project/
 - `reports/`: final acceptance reports used by `coding-manager` and users.
 - `memory/`: durable project facts and conventions.
 - `handoff/`: context handoffs for future agents or sessions.
+- `repos/`: source repositories that belong to this Codex Project workspace.
 - `README.md`: human-facing project entrypoint.
 
 Use `assets/software-project-template/` as the starter template when a target project lacks this structure. After the PRD or implementation brief is stable enough, initialize or normalize the project harness automatically before planning code delivery.
 
 Only ask before initialization when the action would overwrite existing files, conflict with existing conventions, or create files outside the intended project root.
+
+## Codex Project Workspace Layout
+
+In Codex App or generated/projectless Codex workspaces, prefer the Codex Project workspace as the harness root. Do not default to treating the downloaded repo checkout as the whole harness root when a parent Codex workspace is available or can be created.
+
+Default layout:
+
+```txt
+<codex-project-workspace>/
+  AGENTS.md
+  README.md
+  assets/
+  debug/
+  docs/
+  handoff/
+  memory/
+  reports/
+  review/
+  spec/
+  test/
+  tools/
+  repos/
+    <repo-name>/
+```
+
+Use this rule when a user asks to download, clone, initialize, or harness a repo inside Codex: create or select a clear workspace root first, initialize the harness at that root, then place the repo under `repos/<repo-name>/` by default.
+
+Distinguish these paths explicitly:
+
+- **Workspace root**: the Codex Project visible in the app, where `AGENTS.md`, `spec/`, `docs/`, `reports/`, `memory/`, and `handoff/` live.
+- **Repo root**: the implementation checkout, normally `repos/<repo-name>/`, where package commands, source edits, and repo-specific tests run.
+
+If the current directory is already a repo root and the user explicitly asked to work in place, preserve that layout. Ask before moving an existing checkout, creating a parent workspace, or changing a user's established directory convention.
 
 ## Skill Stack
 
@@ -67,7 +103,7 @@ Default flow:
 1. Elicit requirements by asking the user focused questions until the product behavior is clear enough to write.
 2. Use `$mattpocock-skill-router` to route unclear requirements to `grill-me` or `grill-with-docs`, then to `to-prd`.
 3. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, and non-goals.
-4. Inspect the target project harness. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, or other required harness files are missing, add or normalize them automatically before coding work begins.
+4. Inspect the target project harness. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them automatically before coding work begins.
 5. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
 6. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
 7. Use `$coding-manager` for PRD-to-code delivery, agent selection, sub-agent dispatch, integration, validation, audit, and fix loops.
