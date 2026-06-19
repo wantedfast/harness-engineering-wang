@@ -54,7 +54,7 @@ memory / context-compress 沉淀项目上下文或交接
    Questions the user, resolves ambiguity, writes the PRD, and defines acceptance criteria.
 
 3. Harness initialization layer: `harness-engineering`
-   After the PRD or implementation brief is stable, inspect the target project and automatically add or normalize `AGENTS.md`, `spec/`, `docs/`, `tools/`, `assets/`, `README.md`, and `.gitignore` when missing. Ask first only when existing files would be overwritten or conventions conflict.
+   After the PRD or implementation brief is stable, inspect the target project only after the visible Codex Project gate has passed, or after the user explicitly requested an in-place repo workflow. Then add or normalize `AGENTS.md`, `spec/`, `docs/`, `tools/`, `assets/`, `README.md`, and `.gitignore` when missing. Ask first when the Project gate has not passed, existing files would be overwritten, conventions conflict, or the intended project root is ambiguous.
 
 4. Planning layer: `plan`, `to-issues`, `prototype`, `tdd`
    Converts the PRD into implementation slices, prototypes, and test-first work when useful.
@@ -79,7 +79,7 @@ memory / context-compress 沉淀项目上下文或交接
 - New project or messy repo: start with `harness-engineering`.
 - Vague feature: use `mattpocock-skill-router` -> `grill-me`, then `to-prd`.
 - Requirements need repo vocabulary or decisions: use `mattpocock-skill-router` -> `grill-with-docs`, then `to-prd`.
-- PRD ready but target project lacks harness files: use `harness-engineering` to initialize or normalize automatically before implementation planning.
+- PRD ready but target project lacks harness files: use `harness-engineering` to pass the visible Project gate, or confirm explicit in-place repo work, then initialize or normalize before implementation planning.
 - PRD ready for execution: use `coding-manager`.
 - Multi-file software change: use `coding-manager`; it selects implementer, QA, reviewer, and fix loops.
 - Unknown library/API: use `research` before editing.

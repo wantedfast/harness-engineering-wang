@@ -44,13 +44,27 @@ project/
 - `repos/`: source repositories that belong to this Codex Project workspace.
 - `README.md`: human-facing project entrypoint.
 
-Use `assets/software-project-template/` as the starter template when a target project lacks this structure. After the PRD or implementation brief is stable enough, initialize or normalize the project harness automatically before planning code delivery.
+Use `assets/software-project-template/` as the starter template when a target project lacks this structure. After the PRD or implementation brief is stable enough, initialize or normalize the project harness before planning code delivery only after the Visible Project Gate has passed, or after the user has explicitly asked to work in an existing repo root in place.
 
-Only ask before initialization when the action would overwrite existing files, conflict with existing conventions, or create files outside the intended project root.
+Only ask before initialization when the Visible Project Gate has not passed, the action would overwrite existing files, existing conventions conflict, or the intended project root is ambiguous.
 
 ## Codex Project Workspace Layout
 
 In Codex App or generated/projectless Codex workspaces, prefer the Codex Project workspace as the harness root. Do not default to treating the downloaded repo checkout as the whole harness root when a parent Codex workspace is available or can be created.
+
+### Visible Project Gate
+
+When the user asks to create a new work project, download a repo for a new project, or start a harness-managed effort that should be visible in Codex App, first make sure there is a visible Codex App Project for that work.
+
+Use this order:
+
+1. If a Codex App Project creation or selection tool is available, use it to create/select the visible Project workspace.
+2. If no such tool is available, stop before cloning or initializing the harness and tell the user to use the left sidebar `Project` menu:
+   - `Start from scratch` for a new empty workspace.
+   - `Use an existing folder` for an already-created workspace folder.
+3. Continue only after the selected/opened Project workspace is the current workspace root.
+
+Do not silently use the current thread's generated folder as a substitute for a user-visible Project when the user's intent is to create a work project they can see and reopen from the Codex UI.
 
 Default layout:
 
@@ -72,14 +86,14 @@ Default layout:
     <repo-name>/
 ```
 
-Use this rule when a user asks to download, clone, initialize, or harness a repo inside Codex: create or select a clear workspace root first, initialize the harness at that root, then place the repo under `repos/<repo-name>/` by default.
+Use this rule when a user asks to download, clone, initialize, or harness a repo inside Codex: create or select a visible Project workspace first, initialize the harness at that root, then place the repo under `repos/<repo-name>/` by default.
 
 Distinguish these paths explicitly:
 
 - **Workspace root**: the Codex Project visible in the app, where `AGENTS.md`, `spec/`, `docs/`, `reports/`, `memory/`, and `handoff/` live.
 - **Repo root**: the implementation checkout, normally `repos/<repo-name>/`, where package commands, source edits, and repo-specific tests run.
 
-If the current directory is already a repo root and the user explicitly asked to work in place, preserve that layout. Ask before moving an existing checkout, creating a parent workspace, or changing a user's established directory convention.
+If the current directory is already a repo root and the user explicitly asked to work in place, preserve that layout. Ask before moving an existing checkout, creating a parent workspace, or changing a user's established directory convention. If the user expected a visible Codex Project instead, guide them to create/select that Project first rather than normalizing in place.
 
 ## Skill Stack
 
@@ -103,7 +117,7 @@ Default flow:
 1. Elicit requirements by asking the user focused questions until the product behavior is clear enough to write.
 2. Use `$mattpocock-skill-router` to route unclear requirements to `grill-me` or `grill-with-docs`, then to `to-prd`.
 3. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, and non-goals.
-4. Inspect the target project harness. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them automatically before coding work begins.
+4. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
 5. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
 6. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
 7. Use `$coding-manager` for PRD-to-code delivery, agent selection, sub-agent dispatch, integration, validation, audit, and fix loops.
@@ -135,7 +149,7 @@ Keep it operational. Avoid motivational language and broad theory.
 1. Inspect the existing project before adding structure.
 2. Preserve existing conventions and docs.
 3. If the user's request is underspecified, question the user before writing PRD or code.
-4. Once the PRD or implementation brief is stable, initialize or normalize the project harness automatically if required files are missing.
+4. Once the PRD or implementation brief is stable, initialize or normalize the project harness if required files are missing, but only after the Visible Project Gate has passed or the user explicitly requested in-place repo work.
 5. Add missing harness files only where they help agents act more reliably.
 6. Prefer templates as a starting point, then tailor to the repo.
 7. Validate by checking that a future agent could answer:
@@ -152,7 +166,7 @@ Keep it operational. Avoid motivational language and broad theory.
 - Do not duplicate the same rule across many files unless it is intentionally repeated for visibility.
 - Do not add scripts under `tools/` unless they are executable and useful.
 - Do not let coding begin from vague intent when a PRD or implementation brief is needed.
-- Do not wait for a separate user command to initialize the project harness after the PRD is ready; do it as part of the workflow unless it would overwrite or conflict.
+- Do not wait for a separate user command to initialize the project harness after the PRD is ready when the Visible Project Gate has passed or the user explicitly requested in-place repo work; otherwise stop and instruct the user to create/select the visible Codex Project first.
 - Prefer `coding-manager` over ad hoc multi-agent orchestration for software delivery.
 - Require `coding-manager` or the main agent to inspect `test/reports/`, `debug/reports/`, `review/reports/`, and `reports/` before declaring acceptance.
 - Treat the harness as living infrastructure: update it when the workflow changes.

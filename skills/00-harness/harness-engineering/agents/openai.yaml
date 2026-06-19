@@ -1,4 +1,4 @@
 interface:
   display_name: "Harness Engineering"
   short_description: "Set up AI-ready Codex project workspaces."
-  default_prompt: "Use $harness-engineering to set up this Codex Project workspace with repos, specs, evidence, memory, and handoff."
+  default_prompt: "Use $harness-engineering to create or select a visible Codex Project workspace, then set it up with repos, specs, evidence, memory, and handoff."

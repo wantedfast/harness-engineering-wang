@@ -38,6 +38,7 @@ Fill these in with real commands before relying on agents. If source code lives 
 ## Working Rules
 
 - Treat this directory as the workspace harness root when it is a Codex Project workspace.
+- If the user expected a visible Codex App Project and this folder is not opened as one, tell them to use `Project -> Start from scratch` or `Project -> Use an existing folder` before continuing.
 - Put downloaded or cloned implementation repositories under `repos/<repo-name>/` unless the user explicitly requests another layout.
 - Keep workspace-level specs, docs, reports, memory, and handoff files outside individual repo checkouts.
 - Inspect relevant files before editing.

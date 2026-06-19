@@ -9,6 +9,7 @@ This repository packages a staged skill stack for turning vague software ideas i
 ```text
 Ask requirements
 -> Write PRD
+-> Pass the visible Codex Project gate
 -> Initialize or normalize the project harness
 -> Split implementation slices
 -> Deliver with coding-manager and subagents
@@ -83,6 +84,7 @@ User has a vague idea
 -> mattpocock-skill-router selects the requirement workflow
 -> grill-me / grill-with-docs asks focused questions
 -> to-prd / spec writes PRD and acceptance criteria
+-> harness-engineering passes the visible Project gate
 -> harness-engineering initializes or normalizes the project harness
 -> to-issues / plan creates implementation slices
 -> coding-manager selects subagents and delivers code
@@ -101,8 +103,9 @@ flowchart TD
     E --> G["to-prd / spec<br/>PRD, acceptance criteria, non-goals"]
     F --> G
     C -- "Yes" --> G
-    G --> H["harness-engineering<br/>Initialize or normalize project harness"]
-    H --> I["to-issues / plan<br/>Implementation slices and order"]
+    G --> H["harness-engineering<br/>Pass visible Project gate"]
+    H --> H2["harness-engineering<br/>Initialize or normalize project harness"]
+    H2 --> I["to-issues / plan<br/>Implementation slices and order"]
     I --> J{"Prototype or TDD needed?"}
     J -- "Prototype" --> K["prototype"]
     J -- "TDD" --> L["tdd"]
@@ -155,7 +158,7 @@ project/
   .gitignore
 ```
 
-The harness is initialized automatically after the PRD or implementation brief is stable, unless doing so would overwrite existing files, conflict with existing conventions, or target an ambiguous project root.
+The harness is initialized after the PRD or implementation brief is stable only after the visible Codex Project workspace has been created/selected, or after the user explicitly requests an in-place repo workflow. Agents should not silently initialize a transient thread directory when the user expected a visible Project.
 
 ### Codex Project Workspace Layout
 
@@ -180,6 +183,8 @@ codex-project-workspace/
 ```
 
 Workspace-level specs, reports, memory, and handoff files stay at the Project root. Repo-specific commands and source edits run inside the relevant `repos/<repo-name>/` checkout. See `docs/codex-project-workspace-harness-prd.md`.
+
+When the user wants a new visible work project, `harness-engineering` should first use the Codex App Project capability when available. If no callable Project creation/selection tool is available, it should tell the user to create or choose the Project from the left sidebar with `Project -> Start from scratch` or `Project -> Use an existing folder`, then continue inside that visible Project. It should not silently treat a transient thread directory as that Project.
 
 ## Evidence Loop
 
