@@ -6,7 +6,8 @@ This repository packages a Codex skill stack for Harness Engineering in AI-assis
 
 ## Directory Map
 
-- `skills/`: installable Codex skills.
+- `skills/`: Codex skills grouped by workflow stage.
+- `scripts/install-skills.ps1`: installs grouped skills into Codex's flat skills directory.
 - `README.md`: English documentation.
 - `README.zh-CN.md`: Chinese documentation.
 - `outputs/`: local generated deliverables; do not commit by default.
@@ -15,6 +16,7 @@ This repository packages a Codex skill stack for Harness Engineering in AI-assis
 ## Working Rules
 
 - Keep skills concise and operational.
+- Keep `skills/` grouped by workflow stage in this repository; do not flatten it here. Only `scripts/install-skills.ps1` should flatten skills into Codex's install directory.
 - Put project-specific truth in target projects, not inside generic skills.
 - Validate changed skills with the Codex skill validator when possible.
 - Do not copy external companion skills into this repository unless explicitly requested and licensing is clear.
@@ -24,7 +26,7 @@ This repository packages a Codex skill stack for Harness Engineering in AI-assis
 Run:
 
 ```powershell
-python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" ".\skills\harness-engineering"
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" ".\skills\00-harness\harness-engineering"
 ```
 
 Repeat for changed skill directories.

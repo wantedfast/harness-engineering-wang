@@ -2,91 +2,98 @@
 
 这是一套面向 Codex 类 AI 编程工作流的 Harness Engineering 技能组。
 
-它的目标不是让 AI “直接猜着写代码”，而是把软件开发变成一条可控流程：先问需求，写 PRD，拆任务，再由 coding manager 分配 subagent 写代码，最后测试、调试、审查、沉淀记忆。
+它的目标不是让 AI 直接猜着写代码，而是把软件开发变成一条可审计、可验证、可交接的工程流程：先问需求，写 PRD，初始化项目 harness，拆任务，再由 `coding-manager` 分配 subagent 交付，最后留下测试、调试、审查和验收证据。
 
-## 这是什么
-
-Harness Engineering 可以理解为 AI 编程项目的工程护栏：
-
-- 标准项目结构
-- 清晰的 Agent 工作规则
-- 需求规格和验收标准
-- 可重复运行的工具脚本
-- 测试、调试、审查闭环
-- 长期记忆和上下文交接
-
-核心流程是：
+## 核心逻辑
 
 ```text
 问需求
-↓
-写 PRD
-↓
-拆实现切片
-↓
-coding-manager 调 subagent 交付
-↓
-测试、调试、审查
-↓
-记录 memory 和 handoff
+-> 写 PRD
+-> 初始化或补齐项目 harness
+-> 拆实现切片
+-> coding-manager 调 subagent 交付
+-> 写 test/debug/review 证据
+-> 生成最终验收报告
+-> 记录 memory 和 handoff
 ```
 
-## 技能组
+## 仓库技能目录
 
-本仓库包含：
+仓库里按工作流阶段组织，方便人理解：
 
 ```text
-harness-engineering   总控：项目结构、AGENTS.md、docs/spec/tools/assets、流程规则
-spec                  需求、PRD 辅助、验收标准、非目标
-plan                  执行顺序、风险、验证步骤
-research              技术调研，优先可信来源
-debug                 复现、隔离、修复、验证 bug
-test                  测试和回归验证
-review                代码审查，检查 bug、风险、测试缺口
-memory                长期项目事实和约定
-context-compress      上下文压缩和交接
-multi-agent           通用多 Agent 备用方案
+skills/
+  00-harness/
+    harness-engineering
+  10-workflow-router/
+    mattpocock-skill-router
+  20-requirements-prd/
+    grill-me
+    grill-with-docs
+    to-prd
+    spec
+  30-planning-prototyping/
+    to-issues
+    plan
+    prototype
+  40-delivery-manager/
+    coding-manager
+  50-research/
+    research
+  60-debugging/
+    debug
+    diagnose
+  70-validation-review/
+    test
+    tdd
+    review
+  80-memory-handoff/
+    memory
+    context-compress
+    handoff
+  90-architecture-triage/
+    improve-codebase-architecture
+    triage
+    zoom-out
+  99-fallback-multi-agent/
+    multi-agent
 ```
 
-完整工作流已包含这些 companion skills：
+Codex 本地安装时需要扁平目录，所以安装脚本会把这个分阶段目录展开到 `~/.codex/skills`。
 
-```text
-mattpocock-skill-router   编程范式路由：选择 grill-me、to-prd、to-issues、tdd、diagnose、handoff 等流程
-coding-manager            PRD 到代码交付：分配 subagent、集成、验证、审查、fix loop
-grill-me                  需求访谈，把模糊想法一个个问清楚
-grill-with-docs           结合项目文档、术语、ADR 的需求访谈
-to-prd                    生成 PRD
-to-issues                 拆 issue
-tdd                       测试驱动开发
-diagnose                  纪律化调试
-handoff                   上下文交接
-```
+## 各 Skill 职责
+
+- `harness-engineering`：总控项目 harness、目录结构、`AGENTS.md`、证据目录、流程规则。
+- `mattpocock-skill-router`：选择合适的工程工作流。
+- `grill-me` / `grill-with-docs`：逐步追问需求，直到需求清楚。
+- `to-prd` / `spec`：写 PRD、验收标准、非目标和实现切片。
+- `to-issues` / `plan` / `prototype`：把 PRD 拆成可执行任务，并验证不确定流程。
+- `coding-manager`：PRD 到代码交付的主控制器。
+- `research`：调研外部 API、库、论文和技术方案。
+- `debug` / `diagnose`：复现、隔离、修复并验证失败。
+- `test` / `tdd` / `review`：证明行为正确，并做独立审查。
+- `memory` / `context-compress` / `handoff`：保存长期事实和交接上下文。
+- `multi-agent`：备用；软件交付优先使用 `coding-manager`。
 
 ## 标准主流程
 
 ```text
 用户提出模糊想法
-↓
-harness-engineering 判断项目阶段
-↓
-mattpocock-skill-router 选择需求澄清流程
-↓
-grill-me / grill-with-docs 逐步追问需求
-↓
-to-prd / spec 写 PRD 和验收标准
-↓
-to-issues / plan 拆实现切片
-↓
-coding-manager 选择 subagent 并交付代码
-↓
-test / debug / review 闭环验证
-↓
-memory / context-compress 沉淀项目上下文
+-> harness-engineering 判断项目阶段
+-> mattpocock-skill-router 选择需求澄清流程
+-> grill-me / grill-with-docs 逐步追问需求
+-> to-prd / spec 写 PRD 和验收标准
+-> harness-engineering 自动初始化或补齐项目 harness
+-> to-issues / plan 拆实现切片
+-> coding-manager 选择 subagent 并交付代码
+-> test / debug / review 写证据
+-> reports/ 记录最终 ACCEPTED 或 BLOCKED
+-> memory / context-compress 沉淀项目上下文
 ```
 
-## 项目 Harness 标准
+## 生成的目标项目结构
 
-`harness-engineering` 使用这个项目结构：
+当 `harness-engineering` 应用到一个软件项目时，会使用这套结构：
 
 ```text
 project/
@@ -94,32 +101,82 @@ project/
   docs/
   spec/
   tools/
+  test/
+    STANDARD.md
+    reports/
+  debug/
+    STANDARD.md
+    reports/
+  review/
+    STANDARD.md
+    reports/
+  reports/
+    STANDARD.md
+  memory/
+    STANDARD.md
+    project-memory.md
+  handoff/
+    STANDARD.md
   AGENTS.md
   README.md
   .gitignore
 ```
 
-- `AGENTS.md`：给 AI Agent 看的项目工作规则。
-- `spec/`：需求、PRD、验收标准、任务切片。
-- `docs/`：架构说明、决策记录、领域上下文、运行手册。
-- `tools/`：构建、测试、检查、生成、评估等可重复脚本。
-- `assets/`：项目素材或可复用模板。
-- `README.md`：给人看的项目入口。
+PRD 或 implementation brief 稳定后，`harness-engineering` 会自动初始化或补齐这套结构。只有在会覆盖已有文件、和现有项目规范冲突、或目标项目根目录不明确时，才需要先问用户。
+
+## 证据闭环
+
+生成的目标项目会把执行证据写到文件里，而不是只留在聊天里：
+
+- `test/reports/`：测试命令、通过项、失败项、覆盖缺口。
+- `debug/reports/`：症状、复现、根因、修复、回归验证。
+- `review/reports/`：审查发现、问题、测试缺口、最终 `OK` 或 `NOT OK`。
+- `reports/`：最终验收报告，状态为 `ACCEPTED` 或 `BLOCKED`。
+- `memory/project-memory.md`：长期项目事实和约定。
+- `handoff/`：给后续 agent 或下一轮任务的上下文交接。
+
+`coding-manager` 在宣布交付完成前，应该读取这些报告来判断是否真正通过验收。
 
 ## 安装
 
-把 `skills/` 里的技能复制到 Codex 技能目录：
+安装脚本会做两件事：
+
+1. 把分阶段的 skills 展开安装到 Codex 的扁平 skills 目录。
+2. 把 `coding-manager` 的 subagent TOML 安装到 `~/.codex/agents`。
 
 ```powershell
-Copy-Item -Recurse .\skills\* "$env:USERPROFILE\.codex\skills\"
+.\scripts\install-skills.ps1 -Overwrite
 ```
 
-然后重启或刷新 Codex，让新技能被发现。
+自定义安装目录：
+
+```powershell
+.\scripts\install-skills.ps1 -Destination "$env:USERPROFILE\.codex\skills" -AgentsDestination "$env:USERPROFILE\.codex\agents" -Overwrite
+```
+
+安装后重启或刷新 Codex，让新的 skills 和 agents 被发现。
+
+## 内置 Subagents
+
+`coding-manager` 包含这些 TOML 子代理定义：
+
+```text
+architect-reviewer
+backend-developer
+business-analyst
+debugger
+documentation-engineer
+frontend-developer
+fullstack-developer
+qa-expert
+reviewer
+security-auditor
+```
 
 ## 使用示例
 
 ```text
-Use $harness-engineering to initialize this repo for AI-assisted software delivery.
+Use $harness-engineering to turn this idea into a PRD-driven software delivery workflow.
 ```
 
 ```text
@@ -127,11 +184,16 @@ Use $spec to question me until the requirements are clear, then write the PRD.
 ```
 
 ```text
-Use $harness-engineering and $coding-manager to deliver this PRD with subagents.
+Use $harness-engineering and $coding-manager to deliver this PRD with subagents and evidence reports.
 ```
 
-## 说明
+## 验证状态
 
-- 每个 skill 都刻意保持轻量。项目事实应该写在项目自身，尤其是 `AGENTS.md`、`spec/` 和 `docs/`。
-- `coding-manager`、`mattpocock-skill-router` 以及它们路由到的 Matt 工作流 skills 已包含在本仓库中，可以随完整 harness 一起安装。
-- 本仓库内置 skills 已通过 Codex skill validator 验证。
+push 前已在本地验证：
+
+- 分阶段仓库目录可以安装成 23 个 Codex skills。
+- `coding-manager` 可以安装 10 个 subagent TOML。
+- 关键 skills 通过 `quick_validate.py`。
+- Matt workflow skills 与本机原版一致。
+- `coding-manager` subagent TOML 字节级保持一致。
+- 审计 agent 已按 PRD 验收目标项目证据模板。

@@ -53,22 +53,25 @@ memory / context-compress 沉淀项目上下文或交接
 2. Requirements layer: `mattpocock-skill-router`, `grill-me`, `grill-with-docs`, `to-prd`, `spec`
    Questions the user, resolves ambiguity, writes the PRD, and defines acceptance criteria.
 
-3. Planning layer: `plan`, `to-issues`, `prototype`, `tdd`
+3. Harness initialization layer: `harness-engineering`
+   After the PRD or implementation brief is stable, inspect the target project and automatically add or normalize `AGENTS.md`, `spec/`, `docs/`, `tools/`, `assets/`, `README.md`, and `.gitignore` when missing. Ask first only when existing files would be overwritten or conventions conflict.
+
+4. Planning layer: `plan`, `to-issues`, `prototype`, `tdd`
    Converts the PRD into implementation slices, prototypes, and test-first work when useful.
 
-4. Delivery layer: `coding-manager`
+5. Delivery layer: `coding-manager`
    Selects sub-agents, dispatches coding/testing/review work, integrates results, and runs fix loops.
 
-5. Knowledge layer: `research`, `memory`, `context-compress`
+6. Knowledge layer: `research`, `memory`, `context-compress`
    Pulls external facts, stores durable project context, and prepares handoffs.
 
-6. Execution layer: coding agents plus `debug` or `diagnose`
+7. Execution layer: coding agents plus `debug` or `diagnose`
    Implements changes and fixes failures with reproduction-first diagnosis.
 
-7. Validation layer: `test`, `review`
+8. Validation layer: `test`, `review`
    Proves behavior and catches regressions before completion.
 
-8. Scale layer: `multi-agent`
+9. Scale layer: `multi-agent`
    Use only when `coding-manager` is unavailable or the task is not software delivery.
 
 ## Routing
@@ -76,6 +79,7 @@ memory / context-compress 沉淀项目上下文或交接
 - New project or messy repo: start with `harness-engineering`.
 - Vague feature: use `mattpocock-skill-router` -> `grill-me`, then `to-prd`.
 - Requirements need repo vocabulary or decisions: use `mattpocock-skill-router` -> `grill-with-docs`, then `to-prd`.
+- PRD ready but target project lacks harness files: use `harness-engineering` to initialize or normalize automatically before implementation planning.
 - PRD ready for execution: use `coding-manager`.
 - Multi-file software change: use `coding-manager`; it selects implementer, QA, reviewer, and fix loops.
 - Unknown library/API: use `research` before editing.

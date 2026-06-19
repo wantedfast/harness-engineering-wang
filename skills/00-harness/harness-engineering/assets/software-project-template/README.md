@@ -9,7 +9,13 @@ Add setup, run, and test commands here.
 ## Structure
 
 - `assets/`
+- `debug/`
 - `docs/`
+- `handoff/`
+- `memory/`
+- `reports/`
+- `review/`
 - `spec/`
+- `test/`
 - `tools/`
 - `AGENTS.md`

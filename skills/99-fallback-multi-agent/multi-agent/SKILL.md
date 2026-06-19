@@ -1,11 +1,13 @@
 ---
 name: multi-agent
-description: Coordinate multiple agents for larger software projects. Use when the user asks for multi-agent work, agent roles, parallel implementation, architecture plus coding plus testing, or a manager-style workflow for complex changes.
+description: Fallback coordination for multiple agents when coding-manager is unavailable, inappropriate, or the task is not software delivery. Use for general multi-agent work, agent roles, parallel research, documentation, analysis, or non-coding orchestration; for PRD-to-code delivery, prefer coding-manager.
 ---
 
 # Multi Agent
 
-Split complex work into role-bounded agents with clear inputs, outputs, and merge checkpoints.
+Split complex non-delivery work into role-bounded agents with clear inputs, outputs, and merge checkpoints.
+
+For software delivery from PRD to code, prefer `coding-manager`. Use this skill only when `coding-manager` is unavailable, too heavy, or not the right controller for the task.
 
 ## Workflow
 
@@ -29,5 +31,6 @@ Split complex work into role-bounded agents with clear inputs, outputs, and merg
 ## Rules
 
 - Do not spawn agents for tiny tasks.
+- Do not use this as a replacement for `coding-manager` in PRD-to-code delivery.
 - Do not let agents make incompatible assumptions silently.
 - Main agent remains responsible for final correctness.
