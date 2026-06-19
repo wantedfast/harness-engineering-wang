@@ -8,11 +8,15 @@ This repository packages a staged skill stack for turning vague software ideas i
 
 ```text
 Ask requirements
--> Write PRD
+-> Research existing solutions
+-> Compare options A/B/C/D and recommend one
+-> Show flowchart, PRD summary, staged tasks, and AGENTS.md rules
+-> User confirms
 -> Pass the visible Codex Project gate
 -> Initialize or normalize the project harness
 -> Split implementation slices
--> Deliver with coding-manager and subagents
+-> Deliver TASK-1 with coding-manager and subagents
+-> Accept TASK-1 before TASK-2 starts
 -> Write test/debug/review evidence
 -> Produce final acceptance report
 -> Save memory and handoff context
@@ -67,7 +71,7 @@ Codex installs skills as a flat directory, so the installer expands this staged 
 - `harness-engineering`: top-level project harness, project structure, `AGENTS.md`, evidence directories, workflow rules.
 - `mattpocock-skill-router`: routes to the right engineering workflow.
 - `grill-me` / `grill-with-docs`: question the user until requirements are clear.
-- `to-prd` / `spec`: write PRD, acceptance criteria, non-goals, and implementation slices.
+- `to-prd` / `spec`: research existing solutions, compare options, recommend a path, show the flowchart and staged PRD, then write PRD, acceptance criteria, non-goals, and task gates.
 - `to-issues` / `plan` / `prototype`: split the PRD into executable work and validate uncertain flows.
 - `coding-manager`: main PRD-to-code delivery controller.
 - `research`: investigate external APIs, libraries, papers, and technical decisions.
@@ -83,6 +87,10 @@ User has a vague idea
 -> harness-engineering identifies the project phase
 -> mattpocock-skill-router selects the requirement workflow
 -> grill-me / grill-with-docs asks focused questions
+-> spec / research checks existing solutions
+-> spec compares options A/B/C/D and recommends one
+-> spec shows flowchart, PRD summary, staged tasks, and AGENTS.md rules
+-> user confirms or revises
 -> to-prd / spec writes PRD and acceptance criteria
 -> harness-engineering passes the visible Project gate
 -> harness-engineering initializes or normalizes the project harness
@@ -100,29 +108,35 @@ flowchart TD
     C -- "No" --> D["mattpocock-skill-router"]
     D --> E["grill-me<br/>Question the user"]
     D --> F["grill-with-docs<br/>Question with docs and ADRs"]
-    E --> G["to-prd / spec<br/>PRD, acceptance criteria, non-goals"]
+    E --> G["spec / research<br/>Existing solutions and prior art"]
     F --> G
     C -- "Yes" --> G
-    G --> H["harness-engineering<br/>Pass visible Project gate"]
-    H --> H2["harness-engineering<br/>Initialize or normalize project harness"]
-    H2 --> I["to-issues / plan<br/>Implementation slices and order"]
-    I --> J{"Prototype or TDD needed?"}
-    J -- "Prototype" --> K["prototype"]
-    J -- "TDD" --> L["tdd"]
-    J -- "No" --> M["coding-manager"]
-    K --> M
-    L --> M
-    M --> N["Developer subagents<br/>fullstack / frontend / backend"]
-    M --> O["qa-expert<br/>test/reports"]
-    M --> P["debugger<br/>debug/reports"]
-    M --> Q["reviewer<br/>review/reports"]
-    N --> R["reports/<br/>final acceptance report"]
-    O --> R
+    G --> H["spec<br/>Options A/B/C/D and recommendation"]
+    H --> I["spec<br/>Show flowchart, staged tasks, AGENTS.md rules"]
+    I --> J{"User confirms?"}
+    J -- "Revise" --> D
+    J -- "Confirm" --> K["to-prd / spec<br/>PRD, acceptance criteria, non-goals"]
+    K --> L["harness-engineering<br/>Pass visible Project gate"]
+    L --> M["harness-engineering<br/>Initialize or normalize project harness"]
+    M --> N["to-issues / plan<br/>TASK-1, TASK-2, TASK-3 gates"]
+    N --> O{"Prototype or TDD needed?"}
+    O -- "Prototype" --> P["prototype"]
+    O -- "TDD" --> Q["tdd"]
+    O -- "No" --> R["coding-manager<br/>Deliver active task only"]
     P --> R
     Q --> R
-    R --> S{"Accepted?"}
-    S -- "No" --> M
-    S -- "Yes" --> T["memory / context-compress / handoff"]
+    R --> S["Developer subagents"]
+    R --> T["qa-expert<br/>test/reports"]
+    R --> U["debugger<br/>debug/reports"]
+    R --> V["reviewer<br/>review/reports"]
+    S --> W["reports/<br/>task acceptance report"]
+    T --> W
+    U --> W
+    V --> W
+    W --> X{"Task accepted?"}
+    X -- "No" --> R
+    X -- "Yes, next task exists" --> R
+    X -- "All tasks done" --> Y["memory / context-compress / handoff"]
 ```
 
 ## Generated Project Harness

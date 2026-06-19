@@ -104,7 +104,7 @@ Core roles:
 - `$harness-engineering`: project harness, AGENTS.md, docs/spec/tools/assets, overall workflow.
 - `$mattpocock-skill-router`: programming workflow router; selects grill, PRD, issues, TDD, diagnose, architecture, or handoff flow.
 - `grill-me` / `grill-with-docs`: requirement interrogation; ask the user until ambiguity is resolved.
-- `to-prd` / `$spec`: PRD, requirements, non-goals, and acceptance criteria.
+- `to-prd` / `$spec`: requirements, existing-solution research, option comparison, recommendation, PRD, staged tasks, execution flow diagram, non-goals, and acceptance criteria.
 - `to-issues` / `$plan`: implementation slices and execution order.
 - `$coding-manager`: PRD-to-code delivery with selected sub-agents, validation, audit, and fix loops.
 - `$research`: external facts, APIs, libraries, papers, or current technical decisions.
@@ -116,17 +116,20 @@ Default flow:
 
 1. Elicit requirements by asking the user focused questions until the product behavior is clear enough to write.
 2. Use `$mattpocock-skill-router` to route unclear requirements to `grill-me` or `grill-with-docs`, then to `to-prd`.
-3. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, and non-goals.
-4. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
-5. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
-6. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
-7. Use `$coding-manager` for PRD-to-code delivery, agent selection, sub-agent dispatch, integration, validation, audit, and fix loops.
-8. Use `$research` only when external facts, APIs, or library behavior are uncertain.
-9. Use `$test` to verify behavior.
-10. Use `$debug` when verification fails.
-11. Use `$review` before considering the change done.
-12. Use `$memory` to preserve durable project facts.
-13. Use `$context-compress` before handoff or long continuation.
+3. Before writing the PRD, use `$spec` plus `$research` when needed to check existing products, libraries, templates, services, and established patterns. Avoid defaulting to custom work when reuse is viable.
+4. Require the requirements output to include options, normally A/B/C/D, and a clear recommendation with tradeoffs.
+5. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, non-goals, staged tasks, and per-task gates.
+6. Show the user, in the current conversation, the execution flow diagram, PRD summary, staged tasks, and AGENTS.md-relevant rules. Ask for confirmation or revisions before implementation.
+7. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
+8. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
+9. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
+10. Use `$coding-manager` for exactly one staged task at a time. Do not start `TASK-N+1` until `TASK-N` has delivery evidence, test evidence, review evidence, and accepted final status.
+11. Use `$research` again only when external facts, APIs, or library behavior remain uncertain.
+12. Use `$test` to verify behavior.
+13. Use `$debug` when verification fails.
+14. Use `$review` before considering the task done.
+15. Use `$memory` to preserve durable project facts.
+16. Use `$context-compress` before handoff or long continuation.
 
 ## AGENTS.md Rules
 
@@ -138,6 +141,7 @@ When creating or updating `AGENTS.md`, include:
 - Coding conventions.
 - Testing policy.
 - Test, debug, review, and acceptance-report locations.
+- Staged-task gate policy: one task at a time; next task waits for accepted evidence.
 - Change safety rules.
 - Definition of done.
 - Where specs, docs, and tools live.
@@ -159,6 +163,7 @@ Keep it operational. Avoid motivational language and broad theory.
    - What should I never touch casually?
    - Which acceptance criteria must pass before delivery?
    - Where is the test/debug/review evidence?
+   - Which staged task is currently active?
 
 ## Rules
 
@@ -166,6 +171,9 @@ Keep it operational. Avoid motivational language and broad theory.
 - Do not duplicate the same rule across many files unless it is intentionally repeated for visibility.
 - Do not add scripts under `tools/` unless they are executable and useful.
 - Do not let coding begin from vague intent when a PRD or implementation brief is needed.
+- Do not let PRD writing begin from a single imagined solution when existing solutions have not been considered.
+- Do not enter implementation until the user has seen the PRD summary, execution flow diagram, staged tasks, and AGENTS.md-relevant rules.
+- Do not run multiple PRD tasks concurrently unless the user explicitly overrides the staged gate policy.
 - Do not wait for a separate user command to initialize the project harness after the PRD is ready when the Visible Project Gate has passed or the user explicitly requested in-place repo work; otherwise stop and instruct the user to create/select the visible Codex Project first.
 - Prefer `coding-manager` over ad hoc multi-agent orchestration for software delivery.
 - Require `coding-manager` or the main agent to inspect `test/reports/`, `debug/reports/`, `review/reports/`, and `reports/` before declaring acceptance.
