@@ -119,17 +119,18 @@ Default flow:
 3. Before writing the PRD, use `$spec` plus `$research` when needed to check existing products, libraries, templates, services, and established patterns. Avoid defaulting to custom work when reuse is viable.
 4. Require the requirements output to include options, normally A/B/C/D, and a clear recommendation with tradeoffs.
 5. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, non-goals, staged tasks, and per-task gates.
-6. Show the user, in the current conversation, the execution flow diagram, PRD summary, staged tasks, and AGENTS.md-relevant rules. Ask for confirmation or revisions before implementation.
+6. Show the user, in the current conversation, the execution flow diagram, PRD summary, staged tasks, AGENTS.md-relevant rules, and file index paths for the PRD, AGENTS.md, task plan, test reports, debug reports, review reports, acceptance reports, and output artifacts. Ask for confirmation or revisions before implementation.
 7. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
 8. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
 9. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
-10. Use `$coding-manager` for exactly one staged task at a time. Do not start `TASK-N+1` until `TASK-N` has delivery evidence, test evidence, review evidence, and accepted final status.
-11. Use `$research` again only when external facts, APIs, or library behavior remain uncertain.
-12. Use `$test` to verify behavior.
-13. Use `$debug` when verification fails.
-14. Use `$review` before considering the task done.
-15. Use `$memory` to preserve durable project facts.
-16. Use `$context-compress` before handoff or long continuation.
+10. After the user accepts the PRD, AGENTS.md, task plan, test plan, debug plan, review plan, and acceptance plan, `$coding-manager` is mandatory for implementation. If `coding-manager` tooling is unavailable, stop and tell the user before coding unless the user explicitly overrides this gate.
+11. Use `$coding-manager` for exactly one staged task at a time. Do not start `TASK-N+1` until `TASK-N` has delivery evidence, test evidence, debug evidence when failures occurred, review evidence, and accepted final status.
+12. Use `$research` again only when external facts, APIs, or library behavior remain uncertain.
+13. Use `$test` to verify behavior.
+14. Use `$debug` when verification fails.
+15. Use `$review` before considering the task done.
+16. Use `$memory` to preserve durable project facts.
+17. Use `$context-compress` before handoff or long continuation.
 
 ## AGENTS.md Rules
 
@@ -137,16 +138,37 @@ When creating or updating `AGENTS.md`, include:
 
 - Project purpose and stack.
 - Required commands for setup, build, test, lint, and run.
-- Directory map.
+- Workspace and repository root paths when known.
+- Directory map for the workspace harness and the implementation repository.
+- Project repository structure, including the main source, API, test, docs, scripts, and output directories that agents will touch.
 - Coding conventions.
 - Testing policy.
 - Test, debug, review, and acceptance-report locations.
 - Staged-task gate policy: one task at a time; next task waits for accepted evidence.
+- Mandatory `coding-manager` gate after the user accepts the PRD, AGENTS.md, task plan, test plan, debug plan, review plan, and acceptance plan.
+- Instruction to stop and report if `coding-manager` is unavailable, instead of silently continuing as the main agent.
 - Change safety rules.
 - Definition of done.
 - Where specs, docs, and tools live.
+- File index expectations so the user can open PRDs, AGENTS.md, test reports, debug reports, review reports, acceptance reports, and output artifacts.
 
 Keep it operational. Avoid motivational language and broad theory.
+
+## Required File Index
+
+When returning a PRD or completion report to the user, include direct paths to current project files. At minimum include:
+
+- PRD/spec file.
+- AGENTS.md.
+- Task plan or issue breakdown.
+- Test report directory or files.
+- Debug report directory or files.
+- Review report directory or files.
+- Acceptance report directory or files.
+- Output artifacts.
+- Implementation repo root.
+
+Prefer writing a user-facing file index under `outputs/` when the workspace has an `outputs/` directory, while keeping source-of-truth reports under `spec/`, `test/reports/`, `debug/reports/`, `review/reports/`, and `reports/`.
 
 ## Workflow
 
@@ -175,6 +197,7 @@ Keep it operational. Avoid motivational language and broad theory.
 - Do not enter implementation until the user has seen the PRD summary, execution flow diagram, staged tasks, and AGENTS.md-relevant rules.
 - Do not run multiple PRD tasks concurrently unless the user explicitly overrides the staged gate policy.
 - Do not wait for a separate user command to initialize the project harness after the PRD is ready when the Visible Project Gate has passed or the user explicitly requested in-place repo work; otherwise stop and instruct the user to create/select the visible Codex Project first.
-- Prefer `coding-manager` over ad hoc multi-agent orchestration for software delivery.
+- After the user accepts the PRD, AGENTS.md, task plan, and verification/report plan, `coding-manager` is mandatory for software delivery unless the user explicitly overrides that requirement.
+- Prefer `coding-manager` over ad hoc multi-agent orchestration for software delivery before acceptance; require it after acceptance.
 - Require `coding-manager` or the main agent to inspect `test/reports/`, `debug/reports/`, `review/reports/`, and `reports/` before declaring acceptance.
 - Treat the harness as living infrastructure: update it when the workflow changes.
