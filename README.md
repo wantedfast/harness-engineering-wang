@@ -91,6 +91,37 @@ User has a vague idea
 -> memory / context-compress preserves project context
 ```
 
+```mermaid
+flowchart TD
+    A["User idea or request"] --> B["harness-engineering<br/>Detect project phase"]
+    B --> C{"Requirements clear?"}
+    C -- "No" --> D["mattpocock-skill-router"]
+    D --> E["grill-me<br/>Question the user"]
+    D --> F["grill-with-docs<br/>Question with docs and ADRs"]
+    E --> G["to-prd / spec<br/>PRD, acceptance criteria, non-goals"]
+    F --> G
+    C -- "Yes" --> G
+    G --> H["harness-engineering<br/>Initialize or normalize project harness"]
+    H --> I["to-issues / plan<br/>Implementation slices and order"]
+    I --> J{"Prototype or TDD needed?"}
+    J -- "Prototype" --> K["prototype"]
+    J -- "TDD" --> L["tdd"]
+    J -- "No" --> M["coding-manager"]
+    K --> M
+    L --> M
+    M --> N["Developer subagents<br/>fullstack / frontend / backend"]
+    M --> O["qa-expert<br/>test/reports"]
+    M --> P["debugger<br/>debug/reports"]
+    M --> Q["reviewer<br/>review/reports"]
+    N --> R["reports/<br/>final acceptance report"]
+    O --> R
+    P --> R
+    Q --> R
+    R --> S{"Accepted?"}
+    S -- "No" --> M
+    S -- "Yes" --> T["memory / context-compress / handoff"]
+```
+
 ## Generated Project Harness
 
 When applied to a target software project, `harness-engineering` uses this structure:
@@ -136,6 +167,25 @@ The generated target project stores evidence outside chat:
 - `handoff/`: compact continuation notes for future agents.
 
 `coding-manager` should inspect these reports before declaring delivery complete.
+
+```mermaid
+flowchart LR
+    PRD["spec/<br/>PRD and acceptance criteria"] --> CM["coding-manager"]
+    CM --> DEV["developer subagents"]
+    CM --> QA["qa-expert"]
+    CM --> REV["reviewer"]
+    CM --> DBG["debugger when needed"]
+    DEV --> TEST["test/reports"]
+    QA --> TEST
+    DBG --> DEBUG["debug/reports"]
+    REV --> REVIEW["review/reports"]
+    TEST --> FINAL["reports/<br/>ACCEPTED or BLOCKED"]
+    DEBUG --> FINAL
+    REVIEW --> FINAL
+    FINAL --> DECISION{"All acceptance criteria proven?"}
+    DECISION -- "No" --> CM
+    DECISION -- "Yes" --> MEMORY["memory/project-memory.md<br/>handoff/"]
+```
 
 ## Install
 
