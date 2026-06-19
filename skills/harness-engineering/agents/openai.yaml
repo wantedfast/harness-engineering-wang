@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Engineering"
+  short_description: "Coordinate AI-ready software project workflow."
+  default_prompt: "Use $harness-engineering to set up this software project workflow."

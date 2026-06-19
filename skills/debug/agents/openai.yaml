@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug"
+  short_description: "Reproduce, isolate, fix, and verify software failures."
+  default_prompt: "Use $debug to diagnose this error and verify the fix."

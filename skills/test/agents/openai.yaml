@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test"
+  short_description: "Create and run focused verification for code changes."
+  default_prompt: "Use $test to design and run tests for this change."

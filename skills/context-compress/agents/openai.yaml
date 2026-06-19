@@ -1,0 +1,4 @@
+interface:
+  display_name: "Context Compress"
+  short_description: "Compress large project context into a useful brief."
+  default_prompt: "Use $context-compress to summarize this codebase context for the next agent."

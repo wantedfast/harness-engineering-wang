@@ -1,0 +1,4 @@
+interface:
+  display_name: "Memory"
+  short_description: "Maintain durable project context and conventions."
+  default_prompt: "Use $memory to capture the important project facts from this session."

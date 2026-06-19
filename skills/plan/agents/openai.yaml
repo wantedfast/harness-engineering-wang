@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan"
+  short_description: "Turn a software request into an executable task plan."
+  default_prompt: "Use $plan to break this software request into a concise implementation plan."

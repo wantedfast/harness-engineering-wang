@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec"
+  short_description: "Drive implementation from product and technical specs."
+  default_prompt: "Use $spec to turn this idea into a buildable software specification."

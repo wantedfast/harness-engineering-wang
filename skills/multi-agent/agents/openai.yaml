@@ -1,0 +1,4 @@
+interface:
+  display_name: "Multi Agent"
+  short_description: "Coordinate multiple agents for larger software work."
+  default_prompt: "Use $multi-agent to split this software project into agent roles and checkpoints."
