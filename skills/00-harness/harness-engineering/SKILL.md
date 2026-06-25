@@ -114,23 +114,68 @@ Core roles:
 
 Default flow:
 
-1. Elicit requirements by asking the user focused questions until the product behavior is clear enough to write.
-2. Use `$mattpocock-skill-router` to route unclear requirements to `grill-me` or `grill-with-docs`, then to `to-prd`.
-3. Before writing the PRD, use `$spec` plus `$research` when needed to check existing products, libraries, templates, services, and established patterns. Avoid defaulting to custom work when reuse is viable.
-4. Require the requirements output to include options, normally A/B/C/D, and a clear recommendation with tradeoffs.
-5. Use `$spec` or `to-prd` to write the PRD, acceptance criteria, non-goals, staged tasks, and per-task gates.
-6. Show the user, in the current conversation, the execution flow diagram, PRD summary, staged tasks, AGENTS.md-relevant rules, and file index paths for the PRD, AGENTS.md, task plan, test reports, debug reports, review reports, acceptance reports, and output artifacts. Ask for confirmation or revisions before implementation.
-7. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
-8. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
-9. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
-10. After the user accepts the PRD, AGENTS.md, task plan, test plan, debug plan, review plan, and acceptance plan, `$coding-manager` is mandatory for implementation. If `coding-manager` tooling is unavailable, stop and tell the user before coding unless the user explicitly overrides this gate.
-11. Use `$coding-manager` for exactly one staged task at a time. Do not start `TASK-N+1` until `TASK-N` has delivery evidence, test evidence, debug evidence when failures occurred, review evidence, and accepted final status.
-12. Use `$research` again only when external facts, APIs, or library behavior remain uncertain.
-13. Use `$test` to verify behavior.
-14. Use `$debug` when verification fails.
-15. Use `$review` before considering the task done.
-16. Use `$memory` to preserve durable project facts.
-17. Use `$context-compress` before handoff or long continuation.
+1. Start with conversational PRD discovery. Ask one high-leverage clarification question at a time, not a full questionnaire, unless the user explicitly asks for a full questionnaire.
+2. For each question, include the assistant's recommendation: why the question matters, common options, the tradeoff behind each option, the recommended default for this project, and how the user can answer.
+3. After each user answer, update an incremental PRD draft in the conversation. Keep it short and mark decisions as Confirmed, Assumed, or Open.
+4. Continue question-by-question until the core decisions are clear enough to form a stable PRD or implementation brief.
+5. If the user asks to skip questions, make reasonable assumptions, clearly mark them as Assumed, and continue instead of blocking.
+6. Use `$mattpocock-skill-router` to route difficult or contentious requirements to `grill-me` or `grill-with-docs`; keep the same one-question-at-a-time interaction style unless the user requests otherwise.
+7. Before finalizing the PRD, use `$spec` plus `$research` when external facts, APIs, libraries, templates, services, or established patterns materially affect the decision. Avoid defaulting to custom work when reuse is viable.
+8. Only after enough core decisions are collected, write the complete PRD with Background / Problem, Goal, Non-goals, Users / Stakeholders, Core Workflow, Requirements, Technical Design, Execution Split, Milestones, Risks, and Acceptance Criteria.
+9. Show the user, in the current conversation, the execution flow diagram, complete PRD summary, staged tasks, AGENTS.md-relevant rules, and file index paths for the PRD, AGENTS.md, task plan, test reports, debug reports, review reports, acceptance reports, and output artifacts. Ask for confirmation or revisions before implementation.
+10. Inspect the target project harness only after the Visible Project Gate has passed, or after the user explicitly chose an in-place repo workflow. In Codex App workspaces, prefer the workspace root as the harness root and keep repo checkouts under `repos/<repo-name>/`. If `AGENTS.md`, `spec/`, `docs/`, `tools/`, `test/`, `debug/`, `review/`, `reports/`, `memory/`, `handoff/`, `repos/`, or other required harness files are missing, add or normalize them before coding work begins.
+11. Use `$mattpocock-skill-router` to route PRD-to-issues, prototype, TDD, diagnose, architecture, or handoff work.
+12. Use `$plan` to sequence implementation only after the PRD or brief is stable enough.
+13. After the user accepts the PRD, AGENTS.md, task plan, test plan, debug plan, review plan, and acceptance plan, `$coding-manager` is mandatory for implementation. If `coding-manager` tooling is unavailable, stop and tell the user before coding unless the user explicitly overrides this gate.
+14. Use `$coding-manager` for exactly one staged task at a time. Do not start `TASK-N+1` until `TASK-N` has delivery evidence, test evidence, debug evidence when failures occurred, review evidence, and accepted final status.
+15. Use `$research` again only when external facts, APIs, or library behavior remain uncertain.
+16. Use `$test` to verify behavior.
+17. Use `$debug` when verification fails.
+18. Use `$review` before considering the task done.
+19. Use `$memory` to preserve durable project facts.
+20. Use `$context-compress` before handoff or long continuation.
+
+## Conversational PRD Discovery
+
+Use this mode whenever the user wants to explore, shape, or confirm requirements before implementation.
+
+Default interaction:
+
+1. Ask exactly one clarification question in the assistant turn.
+2. Explain why this question matters for the product or implementation.
+3. Present the common options and the tradeoff behind each option.
+4. Recommend one option for the current project and explain the recommendation briefly.
+5. Tell the user how they can answer, including that free-form answers are acceptable.
+6. After the user answers, update the incremental PRD draft with the new decision and then ask the next single most important question.
+
+Incremental PRD draft:
+
+- Maintain a compact draft after every answered question.
+- Use these decision states:
+  - **Confirmed**: the user explicitly decided it.
+  - **Assumed**: the user asked to skip, the answer is obvious from context, or a reasonable default is chosen.
+  - **Open**: still needs a future question.
+- Keep the draft partial until enough core decisions are collected. Do not present it as the final PRD early.
+- Let the draft gradually grow toward the final PRD sections:
+  - Background / Problem
+  - Goal
+  - Non-goals
+  - Users / Stakeholders
+  - Core Workflow
+  - Requirements
+  - Technical Design
+  - Execution Split
+  - Milestones
+  - Risks
+  - Acceptance Criteria
+
+Question selection:
+
+- Ask the question that most reduces uncertainty or implementation risk.
+- Prefer boundary questions before detail questions.
+- Do not ask about implementation details before user workflow, permissions, data ownership, and success criteria are clear enough.
+- Do not bundle multiple independent questions in one turn. If multiple decisions are related, pick the one that unlocks the rest.
+- If the user explicitly requests a full questionnaire, a complete PRD, or batch planning, batching questions is allowed.
 
 ## AGENTS.md Rules
 
@@ -174,11 +219,13 @@ Prefer writing a user-facing file index under `outputs/` when the workspace has 
 
 1. Inspect the existing project before adding structure.
 2. Preserve existing conventions and docs.
-3. If the user's request is underspecified, question the user before writing PRD or code.
-4. Once the PRD or implementation brief is stable, initialize or normalize the project harness if required files are missing, but only after the Visible Project Gate has passed or the user explicitly requested in-place repo work.
-5. Add missing harness files only where they help agents act more reliably.
-6. Prefer templates as a starting point, then tailor to the repo.
-7. Validate by checking that a future agent could answer:
+3. If the user's request is underspecified, enter Conversational PRD Discovery before writing PRD or code.
+4. Ask one question at a time by default, provide a recommendation with tradeoffs, and update the incremental PRD draft after each user answer.
+5. Write the complete PRD only after the core decisions are stable enough for implementation planning.
+6. Once the PRD or implementation brief is stable, initialize or normalize the project harness if required files are missing, but only after the Visible Project Gate has passed or the user explicitly requested in-place repo work.
+7. Add missing harness files only where they help agents act more reliably.
+8. Prefer templates as a starting point, then tailor to the repo.
+9. Validate by checking that a future agent could answer:
    - What should I build?
    - Where should I look?
    - Which commands prove it works?
@@ -193,6 +240,12 @@ Prefer writing a user-facing file index under `outputs/` when the workspace has 
 - Do not duplicate the same rule across many files unless it is intentionally repeated for visibility.
 - Do not add scripts under `tools/` unless they are executable and useful.
 - Do not let coding begin from vague intent when a PRD or implementation brief is needed.
+- Do not ask more than one clarification question in a single assistant turn unless the user explicitly requests a full questionnaire or batch planning.
+- Do not use a long one-shot question list as the default PRD discovery style.
+- For each clarification question, include the assistant's recommendation and the tradeoff behind the main options.
+- After each user answer during discovery, update the incremental PRD draft before moving to the next question.
+- Do not generate the complete PRD until enough core decisions are collected.
+- If the user asks to skip questions, make reasonable assumptions and clearly mark them as Assumed.
 - Do not let PRD writing begin from a single imagined solution when existing solutions have not been considered.
 - Do not enter implementation until the user has seen the PRD summary, execution flow diagram, staged tasks, and AGENTS.md-relevant rules.
 - Do not run multiple PRD tasks concurrently unless the user explicitly overrides the staged gate policy.
